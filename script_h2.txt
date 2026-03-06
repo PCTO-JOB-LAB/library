@@ -1,0 +1,22 @@
+-----user e psw di h2 sono admin e admin-----
+
+CREATE TABLE book (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    isbn VARCHAR(20) NOT NULL
+);
+ 
+CREATE TABLE people (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    surname VARCHAR(255) NOT NULL
+);
+ 
+CREATE TABLE loan (
+    user_id BIGINT,
+    book_id BIGINT,
+    start_date BIGINT,
+    end_date BIGINT,
+    PRIMARY KEY (userId, bookId)
+);
