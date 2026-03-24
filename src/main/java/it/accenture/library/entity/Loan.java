@@ -6,12 +6,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "LOAN")
 public class Loan {
 
@@ -23,10 +26,6 @@ public class Loan {
 
     @Column(name = "end_date")
     private Long endDate;
-
-    public Loan() {
-
-    }
 
     public Loan(LoanTO loanTO) {
         this.id = new LoanPk(loanTO.getUserId(), loanTO.getBookId());

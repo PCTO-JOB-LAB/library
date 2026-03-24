@@ -5,6 +5,7 @@ import it.accenture.library.repository.BookRepository;
 import it.accenture.library.rto.BookRTO;
 import it.accenture.library.to.BookTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -24,48 +25,17 @@ import java.util.stream.Collectors;
  * da Lombok con {@code @RequiredArgsConstructor}; tutti i collaboratori sono dichiarati
  * {@code private final} per garantire l'immutabilità del wiring.</p>
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookService {
 
-    private static final Logger log = LoggerFactory.getLogger(BookService.class);
-
-    /** Repository JPA per l'accesso ai dati della tabella {@code BOOK}. */
-    private final BookRepository bookRepository;
-
-    /** Servizio AI per la generazione di descrizioni dei libri. */
-    private final BookDescriptionService bookDescriptionService;
 
     /**
-     * Ricerca un libro per identificativo e ne arricchisce la risposta con una descrizione AI.
-     *
-     * <p>Se il libro non è presente nel database viene restituito {@code null} e viene
-     * registrato un warning nel log. In caso di errore nella chiamata AI, la descrizione
-     * viene impostata al testo di fallback {@code "[Descrizione AI non disponibile]"}.</p>
-     *
-     * @param id l'identificativo univoco del libro da cercare
-     * @return il {@code BookRTO} popolato con i dati e la descrizione AI,
-     *         oppure {@code null} se il libro non esiste
+     * Repository JPA per l'accesso ai dati della tabella {@code BOOK}.
      */
-    public BookRTO findBookById(Long id) {
-        log.info("findBookById chiamato con id={}", id);
-        Optional<Book> book = bookRepository.findById(id);
-        if (book.isEmpty()) {
-            log.warn("Libro con id={} non trovato nel database", id);
-            return null;
-        }
-        log.info("Libro trovato: {} - {}", book.get().getTitle(), book.get().getAuthor());
-        BookRTO bookRTO = new BookRTO(book.get());
-        try {
-            log.info("Chiamata AI per arricchimento descrizione...");
-            bookRTO.setDescription(bookDescriptionService.describeBook(book.get().getTitle(), book.get().getAuthor()));
-            log.info("Descrizione AI ricevuta con successo");
-        } catch (Exception e) {
-            log.warn("Chiamata AI fallita ({}): {}", e.getClass().getSimpleName(), e.getMessage());
-            bookRTO.setDescription("[Descrizione AI non disponibile]");
-        }
-        return bookRTO;
-    }
+    private final BookRepository bookRepository;
+
 
     /**
      * Restituisce la lista di tutti i libri presenti nel database.
@@ -76,9 +46,10 @@ public class BookService {
      * @return lista (eventualmente vuota) di {@code BookRTO}
      */
     public List<BookRTO> findAll() {
-        return bookRepository.findAll().stream()
-                .map(BookRTO::new)
-                .collect(Collectors.toList());
+        return bookRepository.findAll()
+                             .stream()
+                             .map(BookRTO::new)
+                             .collect(Collectors.toList());
     }
 
     /**

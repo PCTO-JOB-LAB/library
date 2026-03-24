@@ -23,16 +23,6 @@ public class BookFacade {
     private final BookService bookService;
 
     /**
-     * Recupera un libro per identificativo, arricchito dalla descrizione AI.
-     *
-     * @param id l'identificativo univoco del libro
-     * @return il {@code BookRTO} corrispondente, oppure {@code null} se non trovato
-     */
-    public BookRTO findBookById(Long id) {
-        return bookService.findBookById(id);
-    }
-
-    /**
      * Recupera la lista di tutti i libri presenti nel database.
      *
      * @return lista (eventualmente vuota) di {@code BookRTO}

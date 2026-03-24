@@ -1,5 +1,6 @@
 package it.accenture.library.controller;
 
+import it.accenture.library.entity.Book;
 import it.accenture.library.facade.BookFacade;
 import it.accenture.library.rto.BookRTO;
 import it.accenture.library.to.BookTO;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Controller REST per la gestione delle risorse libro ({@code /books}).
@@ -34,7 +37,7 @@ public class BookController {
      * @return {@code 200 OK} con la lista di {@code BookRTO}
      */
     @GetMapping("/all")
-    public ResponseEntity<Object> findAllBooks() {
+    public ResponseEntity<List<BookRTO>> findAllBooks() {
         return new ResponseEntity<>(bookFacade.findAllBooks(), HttpStatus.OK);
     }
 
@@ -46,14 +49,14 @@ public class BookController {
      * @return {@code 200 OK} con il {@code BookRTO}, oppure {@code 404 Not Found}
      *         se il libro non esiste
      */
-    @GetMapping("/")
-    public ResponseEntity<Object> findBookById(@RequestParam Long bookId) {
-        BookRTO result = bookFacade.findBookById(bookId);
-        if (result == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+//    @GetMapping("/")
+//    public ResponseEntity<Object> findBookById(@RequestParam Long bookId) {
+//        BookRTO result = bookFacade.findBookById(bookId);
+//        if (result == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(result);
+//    }
 
     /**
      * Crea un nuovo libro nel database a partire dal corpo della richiesta JSON.

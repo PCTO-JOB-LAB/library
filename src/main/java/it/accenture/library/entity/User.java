@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "people")
+@Table(name = "PEOPLE")
 public class User {
 
     /** Identificativo univoco dell'utente, generato automaticamente dal database. */
