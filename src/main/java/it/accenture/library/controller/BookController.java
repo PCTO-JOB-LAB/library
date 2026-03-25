@@ -69,4 +69,26 @@ public class BookController {
         return new ResponseEntity<>(bookFacade.addBook(bookTO), HttpStatus.CREATED);
     }
 
+
+    @DeleteMapping("/")
+    public ResponseEntity<Object> deleteById(@RequestParam Long bookId) {
+        bookFacade.deleteById(bookId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @GetMapping("/by-filter")
+    public ResponseEntity<List<BookRTO>> getByFilter(@RequestParam(required = false) Long bookId,
+                                                     @RequestParam(required = false) String title,
+                                                     @RequestParam(required = false) String author,
+                                                     @RequestParam(required = false) String isbn) {
+
+        return new ResponseEntity<List<BookRTO>>(
+            bookFacade.getByFilter(bookId,
+                                   title,
+                                   author,
+                                   isbn),
+            HttpStatus.OK);
+    }
+
 }

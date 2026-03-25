@@ -40,16 +40,14 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.6.0</version>
 		</dependency>
+
+
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-spring-boot-starter</artifactId>
 			<version>0.36.0</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>dev.langchain4j</groupId>-->
-<!--			<artifactId>langchain4j-anthropic-spring-boot-starter</artifactId>-->
-<!--			<version>0.36.0</version>-->
-<!--		</dependency>-->
+
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-open-ai-spring-boot-starter</artifactId>

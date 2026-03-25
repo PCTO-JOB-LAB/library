@@ -6,8 +6,7 @@ import it.accenture.library.rto.BookRTO;
 import it.accenture.library.to.BookTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +35,36 @@ public class BookService {
      */
     private final BookRepository bookRepository;
 
+    //    /** Servizio AI per la generazione di descrizioni dei libri. */
+//    private final BookDescriptionService bookDescriptionService;
+//
+//    /**
+//     * Ricerca un libro per identificativo e ne arricchisce la risposta con una descrizione AI.
+//     *
+//     * <p>Se il libro non è presente nel database viene restituito {@code null} e viene
+//     * registrato un warning nel log. In caso di errore nella chiamata AI, la descrizione
+//     * viene impostata al testo di fallback {@code "[Descrizione AI non disponibile]"}.</p>
+//     *
+//     * @param id l'identificativo univoco del libro da cercare
+//     * @return il {@code BookRTO} popolato con i dati e la descrizione AI,
+//     *         oppure {@code null} se il libro non esiste
+//     */
+    public BookRTO findBookById(Long id) {
+        log.info("findBookById chiamato con id={}", id);
+        Optional<Book> book = bookRepository.findById(id);
+        if (book.isEmpty()) {
+            log.warn("Libro con id={} non trovato nel database", id);
+            return null;
+        }
+        log.info("Libro trovato: {} - {}", book.get().getTitle(),
+                 book.get().getAuthor());
+        BookRTO bookRTO = new BookRTO(book.get());
+        return bookRTO;
+    }
+
+    public void deleteById(Long id) {
+        bookRepository.deleteById(id);
+    }
 
     /**
      * Restituisce la lista di tutti i libri presenti nel database.
@@ -62,5 +91,16 @@ public class BookService {
         Book book = new Book(bookTO);
         bookRepository.save(book);
         return book.getId();
+    }
+
+    public List<BookRTO> getByFilter(Long bookId,
+                                     String title,
+                                     String author,
+                                     String isbn) {
+        return bookRepository.getByFilter(bookId,
+                                          title,
+                                          author,
+                                          isbn);
+
     }
 }
